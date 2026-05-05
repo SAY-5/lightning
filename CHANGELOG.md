@@ -21,6 +21,10 @@ and this project adheres to
 
 ### Fixed
 
+- AI Assistant: hide the literal backtick characters around inline code in
+  assistant messages. Inline code remains styled in grey monospace.
+  [#PR-NUMBER](https://github.com/OpenFn/lightning/pull/PR-NUMBER)
+
 ## [2.16.3-pre1] - 2026-05-04
 
 ### Changed
