@@ -38,6 +38,10 @@ and this project adheres to
 
 ### Fixed
 
+- Reply with a clean error instead of crashing the run channel when credential
+  resolution returns an unexpected error (e.g. an OAuth provider 5xx, timeout or
+  transport error) during `fetch:credential`
+  [#4853](https://github.com/OpenFn/lightning/issues/4853)
 - Fix email format validation not displaying in the Add Collaborators and Invite
   Collaborator modal. [#4765](https://github.com/OpenFn/lightning/issues/4765)
 - Fix a `workflows_pkey` duplicate-key crash when reconnecting to the

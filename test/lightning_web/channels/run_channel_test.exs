@@ -656,6 +656,30 @@ defmodule LightningWeb.RunChannelTest do
                    :error,
                    "Could not reach the OAuth provider. Try again later"
     end
+
+    @tag capture_log: true
+    test "replies with an error for unexpected credential errors", %{
+      credential: credential,
+      user: user
+    } do
+      credential = Repo.preload(credential, :oauth_client)
+      endpoint = credential.oauth_client.token_endpoint
+
+      Lightning.AuthProviders.OauthHTTPClient.Mock
+      |> Mox.expect(:call, fn
+        %Tesla.Env{method: :post, url: ^endpoint} = env, _opts ->
+          {:ok, %Tesla.Env{env | status: 500, body: Jason.encode!(%{})}}
+      end)
+
+      %{socket: socket} =
+        create_socket_and_run(%{credential: credential, user: user})
+
+      ref = push(socket, "fetch:credential", %{"id" => credential.id})
+
+      assert_reply ref,
+                   :error,
+                   "Could not resolve credential. Try again later"
+    end
   end
 
   describe "marking steps as started and finished" do
